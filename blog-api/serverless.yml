@@ -1,0 +1,41 @@
+org: ${file(./config.yml):aws.org}
+service: blog-api
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-north-1
+  iam:
+    role: ${file(./config.yml):aws.role}
+
+functions:
+  GetBlogs:
+    handler: functions/GetBlogs/index.handler
+    events:
+      - httpApi:
+          path: /api/blogs
+          method: GET
+  GetBlogsByUser:
+    handler: functions/GetBlogsByUser/index.handler
+    events:
+      - httpApi:
+          path: /api/blogs/{user}
+          method: GET
+  PostBlog:
+    handler: functions/PostBlog/index.handler
+    events:
+      - httpApi:
+          path: /api/blogs
+          method: POST
+  UpdateBlog:
+    handler: functions/UpdateBlog/index.handler
+    events:
+      - httpApi:
+          path: /api/blogs/{id}
+          method: PUT
+  DeleteBlog:
+    handler: functions/DeleteBlog/index.handler
+    events:
+      - httpApi:
+          path: /api/blogs/{id}
+          method: DELETE
